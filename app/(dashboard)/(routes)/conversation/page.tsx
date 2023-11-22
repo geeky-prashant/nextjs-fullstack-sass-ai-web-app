@@ -73,7 +73,7 @@ const ConversationPage = () => {
           </form>
         </Form>
         <div className="space-y-4 mt-4">
-          Your AI Generated Reply...
+          I do hope so...
         </div>
       </div>
     </div>
