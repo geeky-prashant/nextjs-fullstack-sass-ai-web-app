@@ -17,7 +17,7 @@ const LandingNavbar = () => {
   const { isSignedIn } = useAuth()
 
   return (
-    <nav className="p-4 bg-transparent flex items-center justify-between">
+    <nav className="p-4 bg-transparent flex items-center justify-between sticky top-0">
       <Link href="/dashboard" className="flex items-center text-2xl font-bold text-white">
         365<span className={cn("text-2xl font-semibold text-yellow-500", font.className)}>SASS</span>
       </Link>
