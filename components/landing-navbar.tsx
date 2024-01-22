@@ -17,7 +17,7 @@ const LandingNavbar = () => {
   const { isSignedIn } = useAuth()
 
   return (
-    <nav className="sticky top-0 backdrop-filter backdrop-blur-lg bg-opacity-30">
+    <nav className="sticky top-0 backdrop-filter backdrop-blur-lg bg-opacity-30 z-20">
       <div className="flex items-center justify-between mx-auto max-w-screen-xl p-4">
         <Link href="/dashboard" className="flex items-center text-2xl font-bold text-white">
           365<span className={cn("text-2xl font-semibold text-yellow-500", font.className)}>SASS</span>

@@ -3,7 +3,7 @@ import LandingHero from "@/components/landing-hero";
 
 const LandingPage = () => {
   return (
-    <div className="h-full">
+    <div className="h-full relative">
       <LandingHero />
       <LandingContent />
     </div>
