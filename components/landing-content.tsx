@@ -3,6 +3,12 @@
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 
 const testimonials = [
   {
@@ -78,7 +84,13 @@ const testimonials = [
 ]
 
 const LandingContent = () => {
-  const [readMore, setReadMore] = useState(false);
+  const [readMoreStates, setReadMoreStates] = useState(testimonials.map(() => false));
+
+  const handleReadMoreClick = (index: number) => {
+    const newReadMoreStates = [...readMoreStates];
+    newReadMoreStates[index] = !newReadMoreStates[index];
+    setReadMoreStates(newReadMoreStates);
+  };
 
   return (
     <div className="px-4 pb-20">
@@ -86,33 +98,44 @@ const LandingContent = () => {
         Testimonials
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {testimonials.map((item) => (
-          <Card key={item.id} className="bg-[#192339] border-none text-white">
-            <CardHeader>
-              <CardTitle className="flex items-start gap-x-2">
-                <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-base">
-                    {item.avatar}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-lg">{item.name}</p>
-                  <p className="text-zinc-400 text-sm">{item.title}</p>
-                </div>
-              </CardTitle>
-              <CardContent className="pt-4 px-0">
-                {readMore ? item.description : `${item.description.substring(0, 100)}...`}
-                <br />
-                <button className="pt-2 md:pt-3 flex items-center gap-0.5 text-[#5EF4EE] text-sm md:text-base font-semibold" onClick={() => setReadMore(!readMore)}>
-                  {readMore ? "show less" : "show more"}
-                  {readMore ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                </button>
-              </CardContent>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 8000,
+          }),
+        ]}
+      >
+        <CarouselContent>
+          {testimonials.map((item, index) => (
+            <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
+              <Card className="bg-[#192339] border-none text-white">
+                <CardHeader>
+                  <CardTitle className="flex items-start gap-x-2">
+                    <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-base">
+                        {item.avatar}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-lg">{item.name}</p>
+                      <p className="text-zinc-400 text-sm">{item.title}</p>
+                    </div>
+                  </CardTitle>
+                  <CardContent className="pt-4 px-0">
+                    {readMoreStates[index] ? item.description : `${item.description.substring(0, 100)}...`}
+                    <br />
+                    <button className="pt-2 md:pt-3 flex items-center gap-0.5 text-[#5EF4EE] text-sm md:text-base font-semibold" onClick={() => handleReadMoreClick(index)}>
+                      {readMoreStates[index] ? "show less" : "show more"}
+                      {readMoreStates[index] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </button>
+                  </CardContent>
+                </CardHeader>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
     </div>
   )
 }
