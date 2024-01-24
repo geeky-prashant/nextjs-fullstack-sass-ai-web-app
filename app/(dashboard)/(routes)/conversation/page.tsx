@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageSquare } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { ChatCompletionMessage } from "openai/resources/index.mjs";
 
 import { Heading } from "@/components/heading"
 import { formSchema } from "./constants"
@@ -18,10 +20,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 const ConversationPage = () => {
   const router = useRouter()
+  const [messages, setMessages] = useState<ChatCompletionMessage[]>([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,8 +37,22 @@ const ConversationPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const userMessage: ChatCompletionMessage = {
+        role: "assistant",
+        content: values.prompt
+      };
 
+      const newMessages = [...messages, userMessage]
+
+      const response = await axios.post("/api/conversation", {
+        messages: newMessages
+      })
+
+      setMessages((current) => [...current, userMessage, response.data]);
+
+      form.reset();
     } catch (error: any) {
+      //TODO: Open Pro Model
       console.log(error)
     } finally {
       router.refresh()
@@ -67,7 +84,7 @@ const ConversationPage = () => {
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        placeholder="How to become a software developer?"
+                        placeholder="Ask anything..."
                         disabled={isLoading}
                         {...field}
                       />
@@ -84,7 +101,15 @@ const ConversationPage = () => {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-          Go to an Engineering college.
+          <div className="flex flex-col-reverse gap-y-4">
+            {
+              messages.map((message) => (
+                <div key={message.content}>
+                  {message.content}
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
