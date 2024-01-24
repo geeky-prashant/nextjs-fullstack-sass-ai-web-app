@@ -16,6 +16,7 @@ export const Empty = ({
           src="/empty.svg"
         />
       </div>
+      <p className="text-muted-foreground text-sm text-center">{label}</p>
     </div>
   )
 }
