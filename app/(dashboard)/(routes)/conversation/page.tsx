@@ -1,11 +1,12 @@
 "use client"
 
-import axios from "axios"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
 import * as z from "zod"
+import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageSquare } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { ChatCompletionMessage } from "openai/resources/index.mjs";
 
 import { Heading } from "@/components/heading"
@@ -20,7 +21,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
 import { Empty } from "@/components/empty"
 
 const ConversationPage = () => {
