@@ -8,9 +8,11 @@ import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MessageSquare } from "lucide-react"
 import { ChatCompletionMessage } from "openai/resources/index.mjs";
-
 import { Heading } from "@/components/heading"
+import { BotAvatar } from "@/components/bot-avatar"
+import { UserAvatar } from "@/components/user-avatar"
 import { formSchema } from "./constants"
+import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -23,7 +25,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Empty } from "@/components/empty"
 import { Loader } from "@/components/loader"
-import { cn } from "@/lib/utils"
 
 const ConversationPage = () => {
   const router = useRouter()
@@ -121,11 +122,14 @@ const ConversationPage = () => {
               messages.map((message) => (
                 <div
                   key={message.content}
-                  className={cn("p-8 w-full flex items-start gap-x-8 rounded-lg",
-                    message.role === "assistant" ? "bg-muted" : "bg-white border border-black/10"
+                  className={cn("p-8 w-full flex items-center gap-x-8 rounded-lg",
+                    message.role === "assistant" ? "bg-white border border-black/10" : "bg-muted"
                   )}
                 >
-                  {message.content}
+                  {message.role === "assistant" ? <UserAvatar /> : <BotAvatar />}
+                  <p className="text-sm">
+                    {message.content}
+                  </p>
                 </div>
               ))
             }
