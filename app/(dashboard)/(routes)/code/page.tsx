@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import * as z from "zod"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MessageSquare } from "lucide-react"
+import { Code } from "lucide-react"
 import { ChatCompletionMessage } from "openai/resources/index.mjs";
 import { Heading } from "@/components/heading"
 import { BotAvatar } from "@/components/bot-avatar"
@@ -48,7 +48,7 @@ const CodePage = () => {
 
       const newMessages = [...messages, userMessage]
 
-      const response = await axios.post("/api/conversation", {
+      const response = await axios.post("/api/code", {
         messages: newMessages
       })
 
@@ -66,11 +66,11 @@ const CodePage = () => {
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="Our most advanced conversation model"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Code Generation"
+        description="Our most advanced code generation model"
+        icon={Code}
+        iconColor="text-green-700"
+        bgColor="bg-green-700/10"
       />
 
       <div className="px-4 lg:px-8">
@@ -88,7 +88,7 @@ const CodePage = () => {
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        placeholder="Ask anything..."
+                        placeholder="Ask anything about your code..."
                         disabled={isLoading}
                         {...field}
                       />
