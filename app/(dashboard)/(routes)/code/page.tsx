@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input"
 import { Empty } from "@/components/empty"
 import { Loader } from "@/components/loader"
 
-const ConversationPage = () => {
+const CodePage = () => {
   const router = useRouter()
   const [messages, setMessages] = useState<ChatCompletionMessage[]>([])
 
@@ -140,4 +140,4 @@ const ConversationPage = () => {
   )
 }
 
-export default ConversationPage
+export default CodePage
