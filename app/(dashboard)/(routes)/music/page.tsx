@@ -37,19 +37,11 @@ const MusicPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionMessage = {
-        role: "user",
-        content: values.prompt
-      };
+      setMusic(undefined)
 
-      const newMessages = [...messages, userMessage]
+      const response = await axios.post("/api/music", values)
 
-      const response = await axios.post("/api/conversation", {
-        messages: newMessages
-      })
-
-      setMessages((current) => [...current, userMessage, response.data]);
-
+      setMusic(response.data.audio)
       form.reset();
     } catch (error: any) {
       //TODO: Open Pro Model
@@ -109,7 +101,7 @@ const MusicPage = () => {
             )
           }
           {
-            messages.length === 0 && !isLoading && (
+            !music && !isLoading && (
               <Empty label="No music generated" />
             )
           }
