@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation"
 import * as z from "zod"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Music } from "lucide-react"
-import { ChatCompletionMessage } from "openai/resources/index.mjs";
+import { VideoIcon } from "lucide-react"
 import { Heading } from "@/components/heading"
 import { formSchema } from "./constants"
 import { Button } from "@/components/ui/button"
@@ -24,7 +23,7 @@ import { Loader } from "@/components/loader"
 
 const VideoPage = () => {
   const router = useRouter()
-  const [music, setMusic] = useState<string>()
+  const [video, setVideo] = useState<string>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,11 +36,11 @@ const VideoPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setMusic(undefined)
+      setVideo(undefined)
 
-      const response = await axios.post("/api/music", values)
+      const response = await axios.post("/api/video", values)
 
-      setMusic(response.data.audio)
+      setVideo(response.data[0])
       form.reset();
     } catch (error: any) {
       //TODO: Open Pro Model
@@ -56,9 +55,9 @@ const VideoPage = () => {
       <Heading
         title="Video Generation"
         description="Our most advanced video model"
-        icon={Music}
-        iconColor="text-emerald-500"
-        bgColor="bg-emerald-500/10"
+        icon={VideoIcon}
+        iconColor="text-orange-700"
+        bgColor="bg-orange-700/10"
       />
 
       <div className="px-4 lg:px-8">
@@ -101,15 +100,15 @@ const VideoPage = () => {
             )
           }
           {
-            !music && !isLoading && (
+            !video && !isLoading && (
               <Empty label="No video generated" />
             )
           }
           {
-            music && (
-              <audio controls className="w-full mt-8">
-                <source src={music} />
-              </audio>
+            video && (
+              <video className="w-full aspect-video mt-8 rounded-lg border bg-black" controls>
+                <source src={video} />
+              </video>
             )
           }
         </div>

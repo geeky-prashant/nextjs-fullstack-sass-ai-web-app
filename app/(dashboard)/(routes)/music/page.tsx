@@ -7,7 +7,6 @@ import * as z from "zod"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Music } from "lucide-react"
-import { ChatCompletionMessage } from "openai/resources/index.mjs";
 import { Heading } from "@/components/heading"
 import { formSchema } from "./constants"
 import { Button } from "@/components/ui/button"
