@@ -7,7 +7,6 @@ import * as z from "zod"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Code } from "lucide-react"
-import { ChatCompletionMessage } from "openai/resources/index.mjs";
 import { Heading } from "@/components/heading"
 import { BotAvatar } from "@/components/bot-avatar"
 import { UserAvatar } from "@/components/user-avatar"
@@ -26,6 +25,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Empty } from "@/components/empty"
 import { Loader } from "@/components/loader"
+
+type ChatCompletionMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
 
 const CodePage = () => {
   const router = useRouter()
@@ -133,7 +137,7 @@ const CodePage = () => {
                       pre: ({
                         node, ...props
                       }) => (
-                        <div className="overflow-auto w-full my-2 bg-black/10 p-5 rounded-lg">
+                        <div className="overflow-auto w-full my-5 bg-black/10 p-5 rounded-lg">
                           <pre {...props} />
                         </div>
                       ),
