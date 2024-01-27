@@ -6,9 +6,13 @@ import { useRouter } from "next/navigation"
 import * as z from "zod"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { VideoIcon } from "lucide-react"
+import { ImageIcon } from "lucide-react"
 import { Heading } from "@/components/heading"
+import { BotAvatar } from "@/components/bot-avatar"
+import { UserAvatar } from "@/components/user-avatar"
 import { formSchema } from "./constants"
+import { cn } from "@/lib/utils"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -21,9 +25,14 @@ import { Input } from "@/components/ui/input"
 import { Empty } from "@/components/empty"
 import { Loader } from "@/components/loader"
 
-const VideoPage = () => {
+type ChatCompletionMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+const ImagePage = () => {
   const router = useRouter()
-  const [video, setVideo] = useState<string>()
+  const [messages, setMessages] = useState<ChatCompletionMessage[]>([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,11 +45,19 @@ const VideoPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setVideo(undefined)
+      const userMessage: ChatCompletionMessage = {
+        role: "user",
+        content: values.prompt
+      };
 
-      const response = await axios.post("/api/video", values)
+      const newMessages = [...messages, userMessage]
 
-      setVideo(response.data[0])
+      const response = await axios.post("/api/conversation", {
+        messages: newMessages
+      })
+
+      setMessages((current) => [...current, userMessage, response.data]);
+
       form.reset();
     } catch (error: any) {
       //TODO: Open Pro Model
@@ -53,11 +70,11 @@ const VideoPage = () => {
   return (
     <div>
       <Heading
-        title="Video Generation"
-        description="Our most advanced video generation model"
-        icon={VideoIcon}
-        iconColor="text-orange-700"
-        bgColor="bg-orange-700/10"
+        title="Image Generation"
+        description="Our most advanced image generation model"
+        icon={ImageIcon}
+        iconColor="text-pink-700"
+        bgColor="bg-pink-700/10"
       />
 
       <div className="px-4 lg:px-8">
@@ -75,7 +92,7 @@ const VideoPage = () => {
                     <FormControl className="m-0 p-0">
                       <Input
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                        placeholder="Generate video..."
+                        placeholder="Generate image..."
                         disabled={isLoading}
                         {...field}
                       />
@@ -100,21 +117,31 @@ const VideoPage = () => {
             )
           }
           {
-            !video && !isLoading && (
-              <Empty label="No video generated" />
+            messages.length === 0 && !isLoading && (
+              <Empty label="No image generated" />
             )
           }
-          {
-            video && (
-              <video className="w-full aspect-video mt-8 rounded-lg border bg-black" controls>
-                <source src={video} />
-              </video>
-            )
-          }
+          <div className="flex flex-col-reverse gap-y-4">
+            {
+              messages.map((message) => (
+                <div
+                  key={message.content}
+                  className={cn("p-8 w-full flex items-start gap-x-8 rounded-lg",
+                    message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
+                  )}
+                >
+                  {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                  <p className="text-sm">
+                    {message.content}
+                  </p>
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-export default VideoPage
+export default ImagePage
