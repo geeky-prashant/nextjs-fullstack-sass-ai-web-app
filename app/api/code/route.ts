@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-import { OpenAI, ChatCompletionMessage } from "openai";
+import { OpenAI } from "openai";
+import ChatCompletionMessage from "openai";
 
 const apiKey = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey });
