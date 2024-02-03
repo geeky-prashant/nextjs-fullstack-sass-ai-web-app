@@ -9,7 +9,6 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Download, ImageIcon } from "lucide-react"
 import { amountOptions, resolutionOptions, formSchema } from "./constants"
-import { cn } from "@/lib/utils"
 
 import { Heading } from "@/components/heading"
 import { Button } from "@/components/ui/button"
