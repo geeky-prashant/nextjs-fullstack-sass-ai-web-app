@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { Card, CardContent } from "./ui/card";
 import { MAX_FREE_COUNTS } from "@/constants";
 import { Progress } from "@/components/ui/progress"
+import { Button } from "./ui/button";
+import { Zap } from "lucide-react";
 
 interface FreeCounterProps {
   apiLimitCount: number
@@ -28,8 +30,16 @@ const FreeCounter = ({ apiLimitCount = 0 }: FreeCounterProps) => {
             <p>
               {apiLimitCount} / {MAX_FREE_COUNTS} Free Generations
             </p>
+
+            <Progress
+              className="h-3"
+              value={(apiLimitCount / MAX_FREE_COUNTS) * 100} />
           </div>
-          <Progress value={33} />
+
+          <Button className="w-full" variant="premium">
+            Upgrade
+            <Zap className="w-4 h-4 ml-2 fill-white" />
+          </Button>
         </CardContent>
       </Card>
     </div>
