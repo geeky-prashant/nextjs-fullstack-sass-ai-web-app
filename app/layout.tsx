@@ -1,10 +1,8 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { CrispProvider } from '@/components/crisp-provider'
-
-const inter = Inter({ subsets: ['latin'] })
+import { ModalProvider } from '@/components/modal-provider'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: '365SASS',
@@ -20,7 +18,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <CrispProvider />
-        <body className={inter.className}>{children}</body>
+        <body>
+          <ModalProvider />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   )
