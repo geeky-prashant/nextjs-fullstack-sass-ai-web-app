@@ -67,7 +67,6 @@ const CodePage = () => {
       if (error?.response?.status === 403) {
         proModal.onOpen()
       }
-      console.log(error)
     } finally {
       router.refresh()
     }
